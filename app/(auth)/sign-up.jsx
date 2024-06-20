@@ -1,70 +1,95 @@
-import { View, Text, ScrollView, Image } from 'react-native';
-import React, {useState} from 'react';
+import { View, Text, ScrollView, Image, Alert } from 'react-native';
+import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import {images} from '../../constants';
+import { images } from '../../constants';
 import FormField from '../../components/FormField';
 import CustomButton from '../../components/CustomButton';
-import {Link} from 'expo-router';
+import { Link } from 'expo-router';
+import axios from 'axios';
 
 const SignUp = () => {
-const [form, setForm] = useState ({
-  username: '',
-  email: '',
-  password: ''
-})
+  const [form, setForm] = useState({
+    username: '',
+    email: '',
+    password: ''
+  });
 
-const [isSubmitting, setisSubmitting] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-const submit = () => {}
+  const submit = async () => {
+    setIsSubmitting(true);
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/MosqueApp/register/', {
+        username: form.username,
+        email: form.email,
+        password: form.password,
+        role: 'user'  // Hardcoded role for user registration
+      });
+      // Handle successful response
+      console.log('Response:', response.data);
+      Alert.alert('Success', 'User registered successfully');
+    } catch (error) {
+      // Handle error
+      console.error('Error:', error.response ? error.response.data : error.message);
+      Alert.alert('Error', 'Failed to register user');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
-    <SafeAreaView className ="bg-primary h-full">
-     <ScrollView>
-      <View className="w-full justify-center min-h-[75vh] px-4 my-6">
-        <Image source = {images.logo}
-        resizeMode='contain' className="w-[115px] h-[35px]"/>
-        <Text className = "text-2xl text-white mt-10 font-psemibold">Sign Up to the Masjid App</Text>
-        
-        <FormField 
-        title= "Username"
-        value={form.username}
-        handleChangeText ={(e) => setForm ({ ...form, username: e})}
-        otherStyles="mt-10"
-        />
-
-        <FormField 
-        title= "Email"
-        value={form.email}
-        handleChangeText ={(e) => setForm ({ ...form, email: e})}
-        otherStyles="mt-7"
-        keyboardType="email-address"
-        />
-
-        <FormField 
-        title= "Password"
-        value={form.password}
-        handleChangeText ={(e) => setForm ({ ...form, password: e})}
-        otherStyles="mt-7"
-        />
-
-        <CustomButton
-        title ="Sign-in"
-        handlePress={submit}
-        containerStyles="mt-7"
-        isLoading = {isSubmitting}
-        />
-        
-        <View className="justify-center pt-5 flex-row gap-2">
-          <Text className ="text-lg text-gray-100 font-pregular">
-            Have an account Already?
-          </Text>
-          <Link href ="/sign-in" className ="text-lg font-psemibold text-secondary">Sign in</Link>
+    <SafeAreaView className="bg-primary h-full">
+      <ScrollView>
+        <View className="w-full justify-center min-h-[75vh] px-4 my-6">
+          <Image source={images.logo} resizeMode="contain" className="w-[115px] h-[35px]" />
+          <Text className="text-2xl text-white mt-10 font-psemibold">Sign Up to the Masjid App</Text>
           
+          <FormField 
+            title="Username"
+            value={form.username}
+            handleChangeText={(e) => setForm({ ...form, username: e })}
+            otherStyles="mt-10"
+          />
+
+          <FormField 
+            title="Email"
+            value={form.email}
+            handleChangeText={(e) => setForm({ ...form, email: e })}
+            otherStyles="mt-7"
+            keyboardType="email-address"
+          />
+
+          <FormField 
+            title="Password"
+            value={form.password}
+            handleChangeText={(e) => setForm({ ...form, password: e })}
+            otherStyles="mt-7"
+          />
+
+          <CustomButton
+            title="Sign-up"
+            handlePress={submit}
+            containerStyles="mt-7"
+            isLoading={isSubmitting}
+          />
+          
+          <View className="justify-center pt-5 flex-row gap-2">
+            <Text className="text-lg text-gray-100 font-pregular">
+              Have an account already?
+            </Text>
+            <Link href="/sign-in" className="text-lg font-psemibold text-secondary">Sign in</Link>
+          </View>
+
+          <View className="justify-center pt-5 flex-row gap-2">
+            <Text className="text-lg text-gray-100 font-pregular">
+              Want to register your mosque?
+            </Text>
+            <Link href="/mosque-sign-up" className="text-lg font-psemibold text-secondary">Register a Mosque</Link>
+          </View>
         </View>
-      </View>
-     </ScrollView>
+      </ScrollView>
     </SafeAreaView>
-  )
+  );
 }
 
-export default SignUp
+export default SignUp;
