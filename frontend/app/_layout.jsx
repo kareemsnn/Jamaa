@@ -4,6 +4,7 @@ import {useFonts} from 'expo-font';
 import {useEffect} from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import ProtectedRoute from '../components/ProtectedRoute';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -30,6 +31,9 @@ const RootLayout = () => {
 
   return (
     <Stack>
+      <ProtectedRoute>
+        <Stack.screen name="home" options = {{headerShown: false}} />
+      </ProtectedRoute>
         <Stack.Screen name= "index" options = {{headerShown: false}} />
         <Stack.Screen name= "(auth)" options = {{headerShown: false}} />
         <Stack.Screen name= "(tabs)" options = {{headerShown: false}} />

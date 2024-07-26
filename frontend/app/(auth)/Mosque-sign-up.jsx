@@ -6,7 +6,7 @@ import FormField from '../../components/FormField';
 import CustomButton from '../../components/CustomButton';
 import { Link } from 'expo-router';
 import { Picker } from '@react-native-picker/picker';
-import { registerUser } from '../../apiRequests';
+import { registerUser } from '../../api';
 
 const SignUp = () => {
   const [form, setForm] = useState({

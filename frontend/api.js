@@ -1,8 +1,9 @@
 import axios from 'axios';
-import { ACCESS_TOKEN } from './constants';
+import { ACCESS_TOKEN } from './tokens';
+import {API_URL} from '@env' 
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL
+  baseURL: API_URL
 })
 
 api.interceptors.request.use(
