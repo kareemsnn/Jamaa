@@ -1,20 +1,18 @@
-import { useRouter } from "expo-router";
+import { Navigate } from "@react-router-dom";
 import {jwtDecode} from "jwt-decode";
-import api from "../api.js";
-import {ACCESS_TOKEN, REFRESH_TOKEN} from "../tokens.js";
+import api from "./api";
+import {ACCESS_TOKEN, REFRESH_TOKEN} from "./constants";
 import {useState, useEffect} from "react";
-import AsyncStorage from "react-native";
 
 function ProtectedRoute({children}) {
     const [isAuthorized,setIsAuthorized] = useState(null)
-    const router = useRouter();
 
     useEffect(() => {
         auth().catch(() => setIsAuthorized(false))
     }, [])
 
     const refreshToken = async () => {
-        const refresh = AsyncStorage.getItem(REFRESH_TOKEN);
+        const refresh = localStorage.getItem(REFRESH_TOKEN);
         try{
             const res = await api.post("/api/token/refresh/", {
                 refresh: refreshToken,
@@ -33,7 +31,7 @@ function ProtectedRoute({children}) {
     };
 
     const auth = async () => {
-        const token = AsyncStorage.getItem(ACCESS_TOKEN);
+        const token = localStorage.getItem(ACCESS_TOKEN);
         if (!token) {
             setIsAuthorized(false);
             return;
@@ -54,12 +52,7 @@ function ProtectedRoute({children}) {
         return <div>Loading...</div>
     }
 
-    if (!isAuthorized) {
-        router.push('/sign-in'); 
-        return null; 
-    }
-
-    return children;
+    return isAuthorized ? children : <Navigate to="/login"/>;
 }
 
 export default ProtectedRoute;

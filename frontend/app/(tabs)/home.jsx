@@ -5,7 +5,7 @@ import {images} from '../../constants'
 import SearchInput from '../../components/SearchInput'
 import Trending from '../../components/Trending'
 import EmptyState from '../../components/EmptyState'
-import { getAllPosts, getLatestPosts } from '../../api'
+import { getAllPosts, getLatestPosts } from '../../apiRequests'
 
 const Home = () => {
   const [posts, setPosts] = useState([]);

@@ -5,7 +5,7 @@ import {images} from '../../constants';
 import FormField from '../../components/FormField';
 import CustomButton from '../../components/CustomButton';
 import {Link} from 'expo-router';
-import { loginUser } from '../../api';
+import { loginUser } from '../../apiRequests';
 
 const SignIn = () => {
 const [form, setForm] = useState ({
